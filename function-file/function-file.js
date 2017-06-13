@@ -1,17 +1,39 @@
-/*
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the MIT license.
- * See LICENSE in the project root for license information.
- */
-
 'use strict';
+var dialog;
+var sendEvent;
 
-(function () {
+Office.initialize = function (reason) {
+  // init here
+};
 
-  // The initialize function must be run each time a new page is loaded
-  Office.initialize = function (reason) {
-    
-  };
+function onSendEvent(event) {
+  sendEvent = event;
+  // dispaly a dialog in a frame
+  Office.context.ui.displayDialogAsync('https://localhost:3000/function-file/dialog.html',
+      { height: 20, width: 30, displayInIframe: true },
+      function (asyncResult) {
+          dialog = asyncResult.value;
+          // callbacks from the parent
+          dialog.addEventHandler(Office.EventType.DialogEventReceived, processMessage);
+          dialog.addEventHandler(Office.EventType.DialogMessageReceived, processMessage);
+      });
+}
 
-  // Add any ui-less function here
+function processMessage(arg) {
+    // close the dialog
+    dialog.close();
+    // procress the result
+    if(arg.error == 12006) {  
+      // user clicked the (X) on the dialog 
+      sendEvent.completed({ allowEvent: false }); 
+    } else {
+      if(arg.message=="Yes") {
+        // user clicked yes
+        sendEvent.completed({ allowEvent: true });
+      } else {
+        // user clicked no
+        sendEvent.completed({ allowEvent: false });
+      }
+    }
+} 
 
-})();

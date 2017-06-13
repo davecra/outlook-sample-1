@@ -2,7 +2,7 @@
   "name": "outlook-sample-1",
   "description": "",
   "author": "",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "scripts": {
     "start": "browser-sync start --config bsconfig.json",
     "validate": "./node_modules/.bin/validate-office-addin"
