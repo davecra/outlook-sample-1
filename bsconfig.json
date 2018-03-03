@@ -9,5 +9,6 @@
     },
     "https": true,
     "watch": true,
-    "files": "*.*"
+    "files": "*.*",
+    "browser": "chrome"
 }
